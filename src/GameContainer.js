@@ -42,7 +42,9 @@ const GameContainer = () => {
   const winStatus = useSelector((state) => state.winStatus);
   const guessExceeded = useSelector((state) => state.guessExceeded);
 
-  const url = "http://localhost:4000/api";
+  const url =
+    "https://wordle-api-geearen.onrender.com/api" ||
+    "http://localhost:4000/api";
   const userPrevEntries = useRef();
   const keyboard = useRef();
 

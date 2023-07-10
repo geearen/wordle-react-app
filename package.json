@@ -8,7 +8,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
-    "react-scripts": "5.0.0",
+    "react-scripts": "^5.0.1",
     "react-simple-keyboard": "^3.4.74",
     "redux": "^4.1.2",
     "web-vitals": "^2.1.4"
@@ -45,7 +45,7 @@
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
     "cypress": "^9.5.3",
-    "jest": "^27.5.1",
+    "jest": "^25.0.0",
     "typescript": "^4.5.5"
   }
 }
