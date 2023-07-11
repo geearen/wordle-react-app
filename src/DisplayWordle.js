@@ -2,16 +2,16 @@ import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import getLocalStorageKey from "./utils/getLocalStorageKey.ts";
-import WinModal from "./WinModal";
-import NoWord from "./NoWord";
+import WinModal from "./WordleComponent/AlertNotification/WinModal.js";
+import NoWord from "./WordleComponent/AlertNotification/NoWord.js";
 
 import changeWin from "./actionCreators/changeWin";
 import changeWinStatus from "./actionCreators/changeWinStatus";
 import changeGuessExceed from "./actionCreators/changeGuessExceed";
 
-import CurrentRow from "./tilesComponent/CurrentRow";
-import EnteredRow from "./tilesComponent/EnteredRow";
-import EmptyTiles from "./tilesComponent/EmptyTiles";
+import CurrentRow from "./WordleComponent/TilesComponent/CurrentRow.js";
+import EnteredRow from "./WordleComponent/TilesComponent/EnteredRow.js";
+import EmptyTiles from "./WordleComponent/TilesComponent/EmptyTiles.js";
 
 const DisplayWordle = ({
   input,

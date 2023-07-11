@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import DisplayWordle from "./DisplayWordle";
-import GameStatsModal from "./GameStatsModal";
+import GameStatsModal from "./WordleComponent/GameStatsModal/GameStatsModal";
 import { useSelector } from "react-redux";
 
 import getLocalStorageKey from "./utils/getLocalStorageKey.ts";
