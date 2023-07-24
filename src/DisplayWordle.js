@@ -39,6 +39,7 @@ const DisplayWordle = ({
 
   const dispatch = useDispatch();
   const enter = useRef(false);
+  const isAWord = useRef(true);
 
   useEffect(() => {
     if (userWord.length === 5 && !winStatus) {
@@ -49,12 +50,13 @@ const DisplayWordle = ({
 
   useEffect(() => {
     enter.current = pressEnter;
-    if (enter.current) {
+    isAWord.current = notWordList;
+    if (enter.current && notWordList) {
       setShakeAnimate(true);
     } else {
       setShakeAnimate(false);
     }
-  }, [pressEnter]);
+  }, [pressEnter, notWordList]);
 
   useEffect(() => {
     if (!hasWordExist) {
@@ -110,6 +112,7 @@ const DisplayWordle = ({
       setColorSpot((prevColorArr) => [...prevColorArr, colorArr]);
     }
   }, [positionChecked]);
+
   // const compareUserToWordle = () => {
   //   let colorArr = [];
   //   [...wordOfDay.toUpperCase()].forEachA((char, index) => {
