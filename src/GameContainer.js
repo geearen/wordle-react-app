@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import DisplayWordle from "./DisplayWordle";
-import GameStatsModal from "./GameStatsModal";
+import GameStatsModal from "./WordleComponent/GameStatsModal/GameStatsModal";
 import { useSelector } from "react-redux";
 
 import getLocalStorageKey from "./utils/getLocalStorageKey.ts";
@@ -10,6 +10,7 @@ import removesSpaces from "./utils/removesSpaces.ts";
 import postData from "./utils/postData.ts";
 import useEventListener from "./utils/useEventListener";
 import removesDuplicates from "./utils/removesDuplicates.ts";
+import toLowerCaseMap from "./utils/toLowerCaseMap.ts";
 
 const GameContainer = () => {
   const [input, setInput] = useState("");
@@ -20,6 +21,8 @@ const GameContainer = () => {
   const [pressEnter, setPressEnter] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [positionChecked, setPositionChecked] = useState([]);
+
+  const [layoutName, setLayoutName] = useState("default");
 
   const [greenChar, setGreenChar] = useState([]);
   const [grayChar, setGrayChar] = useState([]);
@@ -35,8 +38,6 @@ const GameContainer = () => {
     new Array(6).fill(0)
   );
   const [prevColors, setPrevColors] = useState([]);
-  const [prevStats, setPrevStats] = useState([]);
-  const [prevWinEntries, setWinPrevEntries] = useState([]);
   const [prevEntries, setPrevEntries] = useState([]);
 
   const winStatus = useSelector((state) => state.winStatus);
@@ -45,7 +46,6 @@ const GameContainer = () => {
   const url =
     "https://wordle-api-geearen.onrender.com/api" ||
     "http://localhost:4000/api";
-  const userPrevEntries = useRef();
   const keyboard = useRef();
 
   useEffect(() => {
@@ -96,24 +96,36 @@ const GameContainer = () => {
   };
 
   const onChangeInput = (event) => {
-    const input = event.target.value;
-    console.log(input);
+    const input = event.target.value.toUpperCase();
     setInput(input);
     keyboard.current.setInput(input);
   };
 
   const onKeyPress = (button) => {
+    if (button === "{shiftleft}" || layoutName === "shiftleft")
+      handleShift(button);
+
     if (button === "{enter}") {
       if (input.length === 5) {
-        postData(`${url}/word`, { guess: input }).then((data) => {
+        postData(`${url}/word`, { guess: input.toUpperCase() }).then((data) => {
           let apiResponse = data.message;
+          console.log(apiResponse);
           if (apiResponse.wordExist === true) {
             console.log(input, "userInput");
             setUserWord(input);
             setNumGuess(numGuess + 1);
-            setGreenChar(apiResponse.green);
-            setGrayChar(apiResponse.gray);
-            setYellowChar(apiResponse.yellow);
+            setGreenChar([
+              ...apiResponse.green,
+              ...toLowerCaseMap(apiResponse.green),
+            ]);
+            setGrayChar([
+              ...apiResponse.gray,
+              ...toLowerCaseMap(apiResponse.gray),
+            ]);
+            setYellowChar([
+              ...apiResponse.yellow,
+              ...toLowerCaseMap(apiResponse.yellow),
+            ]);
             setPositionChecked(apiResponse.positionChecked);
             setHasWordExist(true);
             onClear();
@@ -126,6 +138,16 @@ const GameContainer = () => {
     } else {
       setPressEnter(false);
     }
+  };
+
+  const handleShift = (button) => {
+    if (layoutName === "default" && button === "{shiftleft}")
+      setLayoutName("shiftleft");
+    if (layoutName === "shiftleft") setLayoutName("default");
+  };
+
+  const onKeyReleasedShift = (button) => {
+    setLayoutName("default");
   };
 
   const handlesKeyboardColor = (greenChar, grayChar, yellowChar) => {
@@ -161,11 +183,16 @@ const GameContainer = () => {
 
   return (
     <div className="game-container flex flex-col">
-      <input value={input} onChange={onChangeInput} type="hidden" />
+      <input
+        value={input.toUpperCase()}
+        onChange={onChangeInput}
+        onKeyUp={(e) => (e.target.value = e.target.value.toUpperCase())}
+        type="hidden"
+      />
 
       <DisplayWordle
-        input={input}
-        userWord={userWord}
+        input={input.toUpperCase()}
+        userWord={userWord.toUpperCase()}
         numGuess={numGuess}
         wordOfDay={wordOfDay}
         hasWordExist={hasWordExist}
@@ -179,34 +206,42 @@ const GameContainer = () => {
         <div className="m-3 p-3 w-2/4 bg-neutral-200 rounded-lg  ">
           <Keyboard
             keyboardRef={(r) => (keyboard.current = r)}
+            layoutName={layoutName}
             layout={{
-              default: [
+              shiftleft: [
                 "Q W E R T Y U I O P",
-                "A S D F G H J K L",
+                "{shiftleft} A S D F G H J K L",
                 "{enter} Z X C V B N M {backspace}",
+              ],
+              default: [
+                "q w e r t y u i o p",
+                "{shiftleft} a s d f g h j k l",
+                "{enter} z x c v b n m {backspace}",
               ],
             }}
             onChange={onChange}
             onKeyPress={onKeyPress}
+            onKeyReleased={(button) => onKeyReleasedShift(button)}
             useEventListener={useEventListener}
             buttonTheme={[
               {
                 class: "btn-green",
-                buttons: `${greenKeys}`,
+                buttons: `${greenKeys} {backspace}`,
               },
               {
                 class: "btn-yellow",
-                buttons: `${yellowKeys}`,
+                buttons: `${yellowKeys} {enter}`,
               },
               {
                 class: "btn-gray",
-                buttons: `${grayKeys}`,
+                buttons: `${grayKeys} {shiftleft}`,
               },
             ]}
             physicalKeyboardHighlight={true}
             physicalKeyboardHighlightPress={true}
             physicalKeyboardHighlightBgColor={"#9AB4D0"}
             maxLength={5}
+            disableButtonHold={true}
           />
         </div>
       </div>

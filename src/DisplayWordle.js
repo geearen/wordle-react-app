@@ -2,16 +2,16 @@ import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import getLocalStorageKey from "./utils/getLocalStorageKey.ts";
-import WinModal from "./WinModal";
-import NoWord from "./NoWord";
+import WinModal from "./WordleComponent/AlertNotification/WinModal.js";
+import NoWord from "./WordleComponent/AlertNotification/NoWord.js";
 
 import changeWin from "./actionCreators/changeWin";
 import changeWinStatus from "./actionCreators/changeWinStatus";
 import changeGuessExceed from "./actionCreators/changeGuessExceed";
 
-import CurrentRow from "./tilesComponent/CurrentRow";
-import EnteredRow from "./tilesComponent/EnteredRow";
-import EmptyTiles from "./tilesComponent/EmptyTiles";
+import CurrentRow from "./WordleComponent/TilesComponent/CurrentRow.js";
+import EnteredRow from "./WordleComponent/TilesComponent/EnteredRow.js";
+import EmptyTiles from "./WordleComponent/TilesComponent/EmptyTiles.js";
 
 const DisplayWordle = ({
   input,
@@ -39,6 +39,7 @@ const DisplayWordle = ({
 
   const dispatch = useDispatch();
   const enter = useRef(false);
+  const isAWord = useRef(true);
 
   useEffect(() => {
     if (userWord.length === 5 && !winStatus) {
@@ -49,12 +50,13 @@ const DisplayWordle = ({
 
   useEffect(() => {
     enter.current = pressEnter;
-    if (enter.current) {
+    isAWord.current = notWordList;
+    if (enter.current && notWordList) {
       setShakeAnimate(true);
     } else {
       setShakeAnimate(false);
     }
-  }, [pressEnter]);
+  }, [pressEnter, notWordList]);
 
   useEffect(() => {
     if (!hasWordExist) {
@@ -110,6 +112,7 @@ const DisplayWordle = ({
       setColorSpot((prevColorArr) => [...prevColorArr, colorArr]);
     }
   }, [positionChecked]);
+
   // const compareUserToWordle = () => {
   //   let colorArr = [];
   //   [...wordOfDay.toUpperCase()].forEachA((char, index) => {
