@@ -1,12 +1,12 @@
-import { configureStore } from "redux";
-import reducer from "./reducers";
+import { configureStore } from "@reduxjs/toolkit";
+import allReducers from "./reducers";
 
-const store = configureStore(
-  reducer,
+const composeEnhancers =
   typeof window === "object" &&
-    typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== "undefined"
+  typeof window.__REDUX_DEVTOOLS_EXTENSION__ !== "undefined"
     ? window.__REDUX_DEVTOOLS_EXTENSION__()
-    : (f) => f
-);
+    : (f) => f;
+
+const store = configureStore({ reducer: allReducers }, composeEnhancers);
 
 export default store;
