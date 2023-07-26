@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
-import DisplayWordle from "./DisplayWordle";
-import GameStatsModal from "./WordleComponent/GameStatsModal/GameStatsModal";
+import DisplayWordle from "./DisplayWordle.js";
+import GameStatsModal from "./WordleComponent/GameStatsModal/GameStatsModal.js";
 import { useSelector } from "react-redux";
 
 import getLocalStorageKey from "./utils/getLocalStorageKey.ts";
