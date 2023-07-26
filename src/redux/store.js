@@ -7,6 +7,6 @@ const composeEnhancers =
     ? window.__REDUX_DEVTOOLS_EXTENSION__()
     : (f) => f;
 
-const store = configureStore({ reducer: allReducers }, composeEnhancers);
+const Store = configureStore({ reducer: allReducers }, composeEnhancers);
 
-export default store;
+export default Store;
