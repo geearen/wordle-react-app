@@ -1,6 +1,6 @@
 import { WINS } from "../actionTypes/actionTypes";
 
-let numWin: number;
+let numWin: number = 0;
 
 (() => {
   let localStorageWon = localStorage.getItem("won")

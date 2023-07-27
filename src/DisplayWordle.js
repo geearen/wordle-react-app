@@ -40,6 +40,7 @@ const DisplayWordle = ({
   const dispatch = useDispatch();
   const enter = useRef(false);
   const isAWord = useRef(true);
+  const numWinsRef = useRef(numWins);
 
   useEffect(() => {
     if (userWord.length === 5 && !winStatus) {
@@ -89,7 +90,7 @@ const DisplayWordle = ({
         localStorage.setItem(hasGuess, JSON.stringify(numGuess));
 
         dispatch(changeWinStatus(true));
-        dispatch(changeWin(numWins + 1));
+        dispatch(changeWin(numWinsRef.current + 1));
         setWinModal(true);
       }
     } else if (currentWord.length === 6) {

@@ -74,7 +74,7 @@ const GameContainer = () => {
       setPrevEntries(hasWon);
       setPrevNumGuess(hasGuess);
     }
-  }, []);
+  }, [url, wordOfDay]);
 
   useEffect(() => {
     handlesKeyboardColor(greenChar, grayChar, yellowChar);

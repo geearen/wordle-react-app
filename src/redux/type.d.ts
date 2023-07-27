@@ -6,15 +6,15 @@ interface IWordle {
 
 type TguessExceeded = {
   type: string
-  payload: IWordle.gueesExceeded
+  payload: IWordle
 }
 
 type Twins = {
   type: string
-  payload: IWordle.win
+  payload: IWordle
 }
 
 type TwinStatus = {
   type: string
-  payload: IWordle.winStatus
+  payload: IWordle
 }
