@@ -5,9 +5,9 @@ import getLocalStorageKey from "./utils/getLocalStorageKey.ts";
 import WinModal from "./WordleComponent/AlertNotification/WinModal.js";
 import NoWord from "./WordleComponent/AlertNotification/NoWord.js";
 
-import changeWin from "./actionCreators/changeWin";
-import changeWinStatus from "./actionCreators/changeWinStatus";
-import changeGuessExceed from "./actionCreators/changeGuessExceed";
+import changeWin from "./redux/actionCreators/changeWin.ts";
+import changeWinStatus from "./redux/actionCreators/changeWinStatus.ts";
+import changeGuessExceed from "./redux/actionCreators/changeGuessExceed.ts";
 
 import CurrentRow from "./WordleComponent/TilesComponent/CurrentRow.js";
 import EnteredRow from "./WordleComponent/TilesComponent/EnteredRow.js";
@@ -40,6 +40,7 @@ const DisplayWordle = ({
   const dispatch = useDispatch();
   const enter = useRef(false);
   const isAWord = useRef(true);
+  const numWinsRef = useRef(numWins);
 
   useEffect(() => {
     if (userWord.length === 5 && !winStatus) {
@@ -89,7 +90,7 @@ const DisplayWordle = ({
         localStorage.setItem(hasGuess, JSON.stringify(numGuess));
 
         dispatch(changeWinStatus(true));
-        dispatch(changeWin(numWins + 1));
+        dispatch(changeWin(numWinsRef.current + 1));
         setWinModal(true);
       }
     } else if (currentWord.length === 6) {

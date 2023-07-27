@@ -2,6 +2,8 @@
 
 A reverse engineer of a popular game wordle. This project was created to practice technologies listed below:
 
+**_NOTE - this project is still in working progress_**
+
 - React
 - TypeScript
 - Tailwind

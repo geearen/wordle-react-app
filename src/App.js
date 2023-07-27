@@ -1,4 +1,4 @@
-import GameContainer from "./GameContainer";
+import GameContainer from "./GameContainer.js";
 
 const App = () => {
   return (
